@@ -124,8 +124,14 @@ export const Home = () => {
 
       {/* Modal for Movie Details */}
       {modalOpen && (
-        <div className="fixed px-4 inset-0 bg-black bg-opacity-70 backdrop-blur-xl flex items-center justify-center z-50">
-          <div className="w-full max-w-md relative h-80 bg-neutral-800 text-neutral-100 overflow-y-auto rounded-lg px-8 py-6 custom-scrollbar">
+        <div
+          className="fixed px-4 inset-0 bg-black bg-opacity-70 backdrop-blur-xl flex items-center justify-center z-50"
+          onClick={() => setModalOpen(false)}
+        >
+          <div
+            className="w-full max-w-md relative h-80 bg-neutral-800 text-neutral-100 overflow-y-auto rounded-lg px-8 py-6 custom-scrollbar"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={() => setModalOpen(false)}
               className="absolute top-2 right-4 text-2xl text-white"
