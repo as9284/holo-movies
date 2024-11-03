@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TbSearch } from "react-icons/tb";
 
-const API_KEY = "94178d88";
+const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
 export const Home = () => {
   const [query, setQuery] = useState("");
@@ -10,14 +10,14 @@ export const Home = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false); // New state for tracking search attempts
+  const [hasSearched, setHasSearched] = useState(false);
 
   const fetchMovies = async () => {
     if (query.trim() === "") return;
 
     setMovies([]);
     setLoading(true);
-    setHasSearched(true); // Set hasSearched to true when a search is initiated
+    setHasSearched(true);
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
