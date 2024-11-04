@@ -14,26 +14,29 @@ export const Home = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [page, setPage] = useState(1);
 
-  const fetchMovies = async () => {
-    if (query.trim() === "") return;
+  const fetchMovies = async (newQuery, newPage = 1) => {
+    if ((newQuery || query).trim() === "") return;
 
-    setMovies([]);
+    if (newPage === 1) {
+      setMovies([]);
+      setHasSearched(true);
+    }
+
     setLoading(true);
-    setHasSearched(true);
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     try {
       const response = await fetch(
-        `https://www.omdbapi.com/?apikey=${API_KEY}&s=${query}&type=${category}`
+        `https://www.omdbapi.com/?apikey=${API_KEY}&s=${
+          newQuery || query
+        }&type=${category}&page=${newPage}`
       );
       const data = await response.json();
 
       if (data.Response === "True") {
-        setMovies(data.Search);
-      } else {
-        setMovies([]);
+        setMovies((prevMovies) => [...prevMovies, ...data.Search]);
+        setPage(newPage);
       }
     } catch (error) {
       console.error("Error fetching movies:", error);
@@ -80,6 +83,15 @@ export const Home = () => {
         fetchMovieDetails={fetchMovieDetails}
         hasSearched={hasSearched}
       />
+      {movies.length > 0 && (
+        <button
+          onClick={() => fetchMovies(query, page + 1)}
+          className="mt-8 px-4 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-600 duration-200"
+          disabled={loading}
+        >
+          Load More
+        </button>
+      )}
       <MovieModal
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
