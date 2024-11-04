@@ -7,6 +7,7 @@ const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
 export const Home = () => {
   const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("movie");
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
@@ -25,7 +26,7 @@ export const Home = () => {
 
     try {
       const response = await fetch(
-        `https://www.omdbapi.com/?apikey=${API_KEY}&s=${query}`
+        `https://www.omdbapi.com/?apikey=${API_KEY}&s=${query}&type=${category}`
       );
       const data = await response.json();
 
@@ -66,7 +67,13 @@ export const Home = () => {
       <h1 className="text-3xl md:text-4xl text-neutral-800 font-bold mb-4">
         Holo Movies
       </h1>
-      <SearchBox query={query} setQuery={setQuery} fetchMovies={fetchMovies} />
+      <SearchBox
+        query={query}
+        setQuery={setQuery}
+        fetchMovies={fetchMovies}
+        category={category}
+        setCategory={setCategory}
+      />
       <MovieList
         loading={loading}
         movies={movies}

@@ -8,6 +8,24 @@
   }
 }
 
+@layer components {
+  .custom-dropdown {
+    @apply w-28 h-12 bg-neutral-900 text-white text-sm font-semibold pl-4 pr-8 cursor-pointer border border-neutral-700 shadow-md outline-none hover:bg-neutral-600 duration-200 appearance-none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+  }
+
+  .custom-dropdown option {
+    @apply bg-neutral-800 text-white;
+  }
+
+  .custom-dropdown option:checked {
+    @apply bg-blue-500 text-white;
+  }
+}
+
 @layer utilities {
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;

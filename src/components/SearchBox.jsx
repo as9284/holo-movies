@@ -1,7 +1,13 @@
 import React from "react";
 import { TbSearch } from "react-icons/tb";
 
-export const SearchBox = ({ query, setQuery, fetchMovies }) => {
+export const SearchBox = ({
+  query,
+  setQuery,
+  category,
+  setCategory,
+  fetchMovies,
+}) => {
   return (
     <>
       <div className="w-full max-w-md flex items-center justify-center mb-8">
@@ -13,8 +19,16 @@ export const SearchBox = ({ query, setQuery, fetchMovies }) => {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && fetchMovies()}
         />
+        <select
+          className="custom-dropdown custom-scrollbar"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="movie">Movie</option>
+          <option value="series">Series</option>
+        </select>
         <button
-          className="w-16 h-12 flex justify-center items-center drop-shadow-md bg-neutral-900 text-white rounded-r-md hover:bg-neutral-600 duration-200"
+          className="w-12 h-12 flex justify-center items-center drop-shadow-md bg-neutral-900 text-white rounded-r-md hover:bg-neutral-600 duration-200"
           onClick={fetchMovies}
         >
           <TbSearch className="text-2xl" />
