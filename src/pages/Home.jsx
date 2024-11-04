@@ -18,7 +18,8 @@ export const Home = () => {
   const [totalResults, setTotalResults] = useState(0);
 
   const fetchMovies = async (newQuery, newPage = 1) => {
-    if ((newQuery || query).trim() === "") return;
+    const searchQuery = typeof newQuery === "string" ? newQuery : query;
+    if (searchQuery.trim() === "") return;
 
     if (newPage === 1) {
       setMovies([]);
@@ -29,9 +30,7 @@ export const Home = () => {
 
     try {
       const response = await fetch(
-        `https://www.omdbapi.com/?apikey=${API_KEY}&s=${
-          newQuery || query
-        }&type=${category}&page=${newPage}`
+        `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchQuery}&type=${category}&page=${newPage}`
       );
       const data = await response.json();
 
