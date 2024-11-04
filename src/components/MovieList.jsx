@@ -1,4 +1,5 @@
 import React from "react";
+import NoPoster from "../assets/NoPoster.webp";
 
 export const MovieList = ({
   loading,
@@ -23,7 +24,7 @@ export const MovieList = ({
                 className="w-72 h-96 relative drop-shadow-md overflow-hidden rounded-md cursor-pointer bg-neutral-800 text-neutral-100 group hover:scale-105 duration-200"
               >
                 <img
-                  src={movie.Poster}
+                  src={movie.Poster !== "N/A" ? movie.Poster : NoPoster}
                   alt={movie.Title}
                   className="absolute inset-0 w-full h-full object-cover"
                 />

@@ -16,6 +16,15 @@ export const Home = () => {
   const [hasSearched, setHasSearched] = useState(false);
   const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
+  const [suggestions, setSuggestions] = useState([]);
+
+  const debounce = (func, delay) => {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), delay);
+    };
+  };
 
   const fetchMovies = async (newQuery, newPage = 1) => {
     const searchQuery = typeof newQuery === "string" ? newQuery : query;
@@ -33,6 +42,7 @@ export const Home = () => {
         `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchQuery}&type=${category}&page=${newPage}`
       );
       const data = await response.json();
+      console.log(data);
 
       if (data.Response === "True") {
         setMovies((prevMovies) => [...prevMovies, ...data.Search]);
@@ -66,6 +76,28 @@ export const Home = () => {
     }
   };
 
+  const fetchSuggestions = async (input) => {
+    if (input.trim() === "") {
+      setSuggestions([]);
+      return;
+    }
+    try {
+      const response = await fetch(
+        `https://www.omdbapi.com/?apikey=${API_KEY}&s=${input}&type=${category}&page=1`
+      );
+      const data = await response.json();
+      if (data.Response === "True") {
+        setSuggestions(data.Search);
+      } else {
+        setSuggestions([]);
+      }
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+    }
+  };
+
+  const debouncedFetchSuggestions = debounce(fetchSuggestions, 300);
+
   return (
     <div className="max-w-7xl min-h-screen m-auto px-4 py-8 flex flex-col items-center justify-center">
       <h1 className="text-3xl md:text-4xl text-neutral-800 font-bold mb-4">
@@ -77,6 +109,9 @@ export const Home = () => {
         fetchMovies={fetchMovies}
         category={category}
         setCategory={setCategory}
+        setSuggestions={setSuggestions}
+        suggestions={suggestions}
+        debouncedFetchSuggestions={debouncedFetchSuggestions}
       />
       <MovieList
         loading={loading}
