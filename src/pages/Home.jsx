@@ -15,6 +15,7 @@ export const Home = () => {
   const [modalLoading, setModalLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [page, setPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
 
   const fetchMovies = async (newQuery, newPage = 1) => {
     if ((newQuery || query).trim() === "") return;
@@ -37,6 +38,7 @@ export const Home = () => {
       if (data.Response === "True") {
         setMovies((prevMovies) => [...prevMovies, ...data.Search]);
         setPage(newPage);
+        setTotalResults(Number(data.totalResults));
       }
     } catch (error) {
       console.error("Error fetching movies:", error);
@@ -83,7 +85,8 @@ export const Home = () => {
         fetchMovieDetails={fetchMovieDetails}
         hasSearched={hasSearched}
       />
-      {movies.length > 0 && (
+      {/* Conditionally render the Load More button if there are more results to load */}
+      {movies.length > 0 && movies.length < totalResults && (
         <button
           onClick={() => fetchMovies(query, page + 1)}
           className="mt-8 px-4 py-2 bg-neutral-800 text-white rounded hover:bg-neutral-600 duration-200"
