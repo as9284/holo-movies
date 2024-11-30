@@ -42,7 +42,6 @@ export const Home = () => {
         `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchQuery}&type=${category}&page=${newPage}`
       );
       const data = await response.json();
-      console.log(data);
 
       if (data.Response === "True") {
         setMovies((prevMovies) => [...prevMovies, ...data.Search]);
